@@ -15,13 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const db_1 = require("./config/db");
-const app_1 = __importDefault(require("./app"));
 const http_1 = __importDefault(require("http"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const axios_1 = __importDefault(require("axios"));
+const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5050;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, db_1.connectDB)();
-        const server = http_1.default.createServer(app_1.default);
+        const server = http_1.default.createServer(app);
         server.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
         });
@@ -30,4 +33,7 @@ const PORT = process.env.PORT || 5050;
         console.error("Failed to start server: ", error);
     }
 }))();
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use(axios_1.default);
 //# sourceMappingURL=server.js.map

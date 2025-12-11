@@ -1,9 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { connectDB } from "./config/db";
-import app from "./app";
 import http from "http";
 
+import express, { Application } from "express";
+import cors from "cors";
+import axios from "axios";
+
+const app: Application = express();
 const PORT = process.env.PORT || 5050;
 
 (async() => {
@@ -18,3 +22,7 @@ server.listen(PORT, () => {
         console.error("Failed to start server: ", error);
     }
 })();
+
+app.use(cors());
+app.use(express.json());
+app.use(axios);

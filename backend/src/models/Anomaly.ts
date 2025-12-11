@@ -1,4 +1,4 @@
-import mongoose, {Document, Schema} from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 import FlightSnapshot from "./FlightSnapshot";
 
 export interface anomalyDocument extends Document{
