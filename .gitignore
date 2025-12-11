@@ -1,4 +1,4 @@
 backend/src/node_modules/
-backend/src/.env
+.env
 *.log
 .DS_Store
