@@ -1,1 +1,1 @@
-{"version":3,"file":"Flight.d.ts","sourceRoot":"","sources":["../../src/models/Flight.ts"],"names":[],"mappings":""}
+{"version":3,"file":"Flight.d.ts","sourceRoot":"","sources":["../../src/models/Flight.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,EAAE,EAAE,QAAQ,EAAU,MAAM,UAAU,CAAC;AAEtD,MAAM,WAAW,cAAe,SAAQ,QAAQ;IAC5C,YAAY,EAAE,MAAM,CAAC;IACrB,OAAO,EAAE,MAAM,CAAC;IAChB,aAAa,EAAE,MAAM,CAAC;IACtB,UAAU,EAAE,MAAM,CAAC;IACnB,MAAM,EAAE,MAAM,CAAC;IACf,WAAW,EAAE,MAAM,CAAC;IACpB,YAAY,EAAE,MAAM,CAAC;IACrB,UAAU,EAAE,MAAM,CAAC;IACnB,WAAW,EAAE,IAAI,CAAC;CACrB;;;;;;AAcD,wBAAsE"}

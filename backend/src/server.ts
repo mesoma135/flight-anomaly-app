@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 5000;
 (async() => {
     try{
         await connectDB();
-        console.log('Database Connected...');
     const server = http.createServer(app);
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
@@ -18,4 +17,4 @@ server.listen(PORT, () => {
     catch(error){
         console.error("Failed to start server: ", error);
     }
-});
+})();

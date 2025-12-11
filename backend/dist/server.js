@@ -17,12 +17,10 @@ dotenv_1.default.config();
 const db_1 = require("./config/db");
 const app_1 = __importDefault(require("./app"));
 const http_1 = __importDefault(require("http"));
-console.log('file is running');
 const PORT = process.env.PORT || 5000;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, db_1.connectDB)();
-        console.log('Database Connected...');
         const server = http_1.default.createServer(app_1.default);
         server.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);

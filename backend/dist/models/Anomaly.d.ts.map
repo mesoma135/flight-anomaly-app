@@ -1,1 +1,1 @@
-{"version":3,"file":"Anomaly.d.ts","sourceRoot":"","sources":["../../src/models/Anomaly.ts"],"names":[],"mappings":""}
+{"version":3,"file":"Anomaly.d.ts","sourceRoot":"","sources":["../../src/models/Anomaly.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,EAAE,EAAC,QAAQ,EAAS,MAAM,UAAU,CAAC;AAGpD,MAAM,WAAW,eAAgB,SAAQ,QAAQ;IACjD,MAAM,EAAE,QAAQ,CAAC,KAAK,CAAC,QAAQ,CAAC;IAChC,IAAI,EAAE,MAAM,CAAC;IACb,QAAQ,EAAE,MAAM,CAAC;IACjB,OAAO,EAAE,MAAM,CAAC;IAChB,UAAU,EAAE,MAAM,CAAC;CAClB;;;;;;AAYD,wBAA2E"}
