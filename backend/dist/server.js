@@ -17,7 +17,7 @@ dotenv_1.default.config();
 const db_1 = require("./config/db");
 const app_1 = __importDefault(require("./app"));
 const http_1 = __importDefault(require("http"));
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, db_1.connectDB)();
