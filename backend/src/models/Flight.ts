@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface flightDocument extends Document {
+    icao24: string;
     flightNumber: string;
     airline: string;
     aircraftModel: string;
@@ -13,6 +14,7 @@ export interface flightDocument extends Document {
 }
 
 const flightSchema = new Schema<flightDocument>({
+    icao24: { type: String, require: true},
     flightNumber: { type: String, required: true },
     airline: { type: String, required: true },
     aircraftModel: {type: String, required: true},
