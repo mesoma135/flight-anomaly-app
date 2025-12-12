@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import { saveLiveFlight, addActiveFlight } from "../cache/flightCache";
 
 const openSkyAPI = process.env.OPENSKY_URL || "";
@@ -14,7 +13,7 @@ export const fetchAndStoreFlights = async () => {
         return;
        }
 
-       for(let i=0 as number; i < states.length; i++){
+       for(let i=0; i < states.length; i++){
         const flight = states[i];
         const flightId = flight[0]; //icao24 unique Id
 
@@ -25,8 +24,8 @@ export const fetchAndStoreFlights = async () => {
         const flightData = {
             callsign: flight[1] ? flight[1].trim(): "",
             origin_country: flight[2] || "",
-            longitude: flight[5] != null ? Number(flight[5].toFixed(1)): null,
-            latitude: flight[6] != null ? Number(flight[6].toFixed(1)): null,
+            longitude: flight[5] ?? null,
+            latitude: flight[6] ?? null,
             speed: flight[9] != null ? Math.floor(flight[9]*1.94384): null, //converting from m/s to kts
             heading: flight[10] != null ? Math.floor(flight[10]): null,
             verticalSpeed: flight[11] != null ? Math.floor(flight[11]*196.85): null, //converting from m/s to ft/min

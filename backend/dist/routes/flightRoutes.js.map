@@ -1,1 +1,1 @@
-{"version":3,"file":"flightRoutes.js","sourceRoot":"","sources":["../../src/routes/flightRoutes.ts"],"names":[],"mappings":""}
+{"version":3,"file":"flightRoutes.js","sourceRoot":"","sources":["../../src/routes/flightRoutes.ts"],"names":[],"mappings":";;AAAA,qCAAiC;AACjC,sEAAsF;AAEtF,MAAM,MAAM,GAAG,IAAA,gBAAM,GAAE,CAAC;AAExB,MAAM,CAAC,GAAG,CAAC,aAAa,EAAE,uCAAoB,CAAC,CAAC;AAChD,MAAM,CAAC,GAAG,CAAC,MAAM,EAAE,gCAAa,CAAC,CAAC;AAElC,kBAAe,MAAM,CAAC"}

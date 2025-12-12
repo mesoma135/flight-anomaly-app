@@ -35,6 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const flightSchema = new mongoose_1.Schema({
+    icao24: { type: String, require: true },
     flightNumber: { type: String, required: true },
     airline: { type: String, required: true },
     aircraftModel: { type: String, required: true },

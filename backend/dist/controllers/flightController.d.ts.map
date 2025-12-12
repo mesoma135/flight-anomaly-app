@@ -1,1 +1,1 @@
-{"version":3,"file":"flightController.d.ts","sourceRoot":"","sources":["../../src/controllers/flightController.ts"],"names":[],"mappings":""}
+{"version":3,"file":"flightController.d.ts","sourceRoot":"","sources":["../../src/controllers/flightController.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAE5C,eAAO,MAAM,oBAAoB,GAAU,KAAK,QAAQ,4DAQvD,CAAC;AAEF,eAAO,MAAM,aAAa,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,4DAa9D,CAAC"}

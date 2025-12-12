@@ -1,6 +1,7 @@
 import Flight from "../models/Flight";
+import { Request, Response } from "express";
 
-export const getHistoricalFlights = async (res: any) => {
+export const getHistoricalFlights = async (res: Response) => {
     try{
         const flights = await Flight.find().sort({lastUpdated: -1}).limit(1000);
         return res.json(flights);
@@ -10,10 +11,14 @@ export const getHistoricalFlights = async (res: any) => {
     }
 };
 
-export const getFlightbyId = async (req: any, res: any) => {
+export const getFlightbyId = async (req: Request, res: Response) => {
     try{
         const { id } = req.params;
-        const flight = await Flight.find({ icao24: id });
+        if (!id) {
+            return res.status(400).json({ error: "icao24 is required" });
+          }      
+
+        const flight = await Flight.findOne({ icao24: id });
         res.json(flight);
     }
     catch(error){

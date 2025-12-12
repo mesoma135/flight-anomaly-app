@@ -5,6 +5,8 @@ import { connectDB } from "./config/db";
 import { connectRedis } from "./cache/redisClient";
 import { initWebSocket } from "./services/websocketService";
 import express, { Application } from "express";
+import flightRoutes from "./routes/flightRoutes";
+import openSkyAPIRoutes from "./routes/openSkyAPIRoutes";
 
 dotenv.config();
 
@@ -32,3 +34,5 @@ initWebSocket(); //Initialize Websocket Server
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/flight", flightRoutes);
+app.use("/api/opensky", openSkyAPIRoutes);

@@ -19,6 +19,8 @@ const db_1 = require("./config/db");
 const redisClient_1 = require("./cache/redisClient");
 const websocketService_1 = require("./services/websocketService");
 const express_1 = __importDefault(require("express"));
+const flightRoutes_1 = __importDefault(require("./routes/flightRoutes"));
+const openSkyAPIRoutes_1 = __importDefault(require("./routes/openSkyAPIRoutes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5050;
@@ -40,4 +42,6 @@ const PORT = process.env.PORT || 5050;
 }))();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+app.use("/api/flight", flightRoutes_1.default);
+app.use("/api/opensky", openSkyAPIRoutes_1.default);
 //# sourceMappingURL=server.js.map

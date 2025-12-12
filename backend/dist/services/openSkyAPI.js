@@ -17,6 +17,7 @@ const axios_1 = __importDefault(require("axios"));
 const flightCache_1 = require("../cache/flightCache");
 const openSkyAPI = process.env.OPENSKY_URL || "";
 const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     try {
         const response = yield axios_1.default.get(openSkyAPI);
         const states = response.data.states;
@@ -33,8 +34,8 @@ const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* (
             const flightData = {
                 callsign: flight[1] ? flight[1].trim() : "",
                 origin_country: flight[2] || "",
-                longitude: flight[5] != null ? Number(flight[5].toFixed(1)) : null,
-                latitude: flight[6] != null ? Number(flight[6].toFixed(1)) : null,
+                longitude: (_a = flight[5]) !== null && _a !== void 0 ? _a : null,
+                latitude: (_b = flight[6]) !== null && _b !== void 0 ? _b : null,
                 speed: flight[9] != null ? Math.floor(flight[9] * 1.94384) : null, //converting from m/s to kts
                 heading: flight[10] != null ? Math.floor(flight[10]) : null,
                 verticalSpeed: flight[11] != null ? Math.floor(flight[11] * 196.85) : null, //converting from m/s to ft/min

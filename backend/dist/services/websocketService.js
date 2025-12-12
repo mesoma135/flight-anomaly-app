@@ -14,12 +14,12 @@ const ws_1 = require("ws");
 const flightCache_1 = require("../cache/flightCache");
 let wss;
 const initWebSocket = () => {
-    wss = new ws_1.WebSocketServer({ port: 7000 });
+    wss = new ws_1.WebSocketServer({ port: 7001 });
     console.log("WebSocket Server Initialized");
     wss.on("connection", (ws) => {
-        console.log("Client connected");
+        console.log("Client Connected");
         ws.on("close", () => {
-            console.log("Client disconnected");
+            console.log("Client Disconnected");
         });
     });
 };

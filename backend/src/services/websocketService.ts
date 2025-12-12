@@ -4,7 +4,7 @@ import { getLiveFlight, getActiveFlights } from "../cache/flightCache";
 let wss: WebSocketServer;
 
 export const initWebSocket = () => {
-    wss = new WebSocketServer({ port: 7000 });
+    wss = new WebSocketServer({ port: 7001 });
     console.log("WebSocket Server Initialized");
 
     wss.on("connection", (ws) => {

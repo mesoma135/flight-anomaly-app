@@ -6,5 +6,5 @@ const router = Router();
 router.get("/historical", getHistoricalFlights);
 router.get("/:id", getFlightbyId);
 
-export default Router;
+export default router;
 

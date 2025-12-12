@@ -1,5 +1,6 @@
 import mongoose, { Document } from "mongoose";
 export interface flightDocument extends Document {
+    icao24: string;
     flightNumber: string;
     airline: string;
     aircraftModel: string;
