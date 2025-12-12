@@ -4,5 +4,6 @@ const express_1 = require("express");
 const openSkyAPIController_1 = require("../controllers/openSkyAPIController");
 const router = (0, express_1.Router)();
 router.get("/states", openSkyAPIController_1.fetchAllStates);
+router.get("/states/:icao24", openSkyAPIController_1.fetchStateById);
 exports.default = router;
 //# sourceMappingURL=openSkyAPIRoutes.js.map
