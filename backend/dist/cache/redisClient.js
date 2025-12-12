@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectRedis = void 0;
+exports.connectRedis = exports.client = void 0;
 const redis_1 = require("redis");
-const client = (0, redis_1.createClient)({
+exports.client = (0, redis_1.createClient)({
     username: String(process.env.REDIS_USERNAME) || "",
     password: String(process.env.REDIS_PASSWORD) || "",
     socket: {
@@ -21,9 +21,9 @@ const client = (0, redis_1.createClient)({
 });
 const connectRedis = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield client.connect();
-        yield client.set('foo', 'bar');
-        const result = yield client.get('foo');
+        yield exports.client.connect();
+        yield exports.client.set('foo', 'bar');
+        const result = yield exports.client.get('foo');
         console.log(result); // >>> bar
     }
     catch (error) {
