@@ -5,7 +5,7 @@ export const saveLiveFlight = async (flightId: string, data: any) =>{
 };
 
 export const getLiveFlight = async(flightId: string) => {
-    await client.hGetAll(`flight: ${flightId}`) || null;
+   return await client.hGetAll(`flight: ${flightId}`) || null;
 };
 
 export const addActiveFlight = async(flightId: string) => {
@@ -13,7 +13,7 @@ export const addActiveFlight = async(flightId: string) => {
 };
 
 export const getActiveFlights = async() => {
-    await client.sMembers("activeFlights") || null;
+    return await client.sMembers("activeFlights") || null;
 };
 
 export const removeActiveFlight = async (flightId: string) => {

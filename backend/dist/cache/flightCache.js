@@ -16,7 +16,7 @@ const saveLiveFlight = (flightId, data) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.saveLiveFlight = saveLiveFlight;
 const getLiveFlight = (flightId) => __awaiter(void 0, void 0, void 0, function* () {
-    (yield redisClient_1.client.hGetAll(`flight: ${flightId}`)) || null;
+    return (yield redisClient_1.client.hGetAll(`flight: ${flightId}`)) || null;
 });
 exports.getLiveFlight = getLiveFlight;
 const addActiveFlight = (flightId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -24,7 +24,7 @@ const addActiveFlight = (flightId) => __awaiter(void 0, void 0, void 0, function
 });
 exports.addActiveFlight = addActiveFlight;
 const getActiveFlights = () => __awaiter(void 0, void 0, void 0, function* () {
-    (yield redisClient_1.client.sMembers("activeFlights")) || null;
+    return (yield redisClient_1.client.sMembers("activeFlights")) || null;
 });
 exports.getActiveFlights = getActiveFlights;
 const removeActiveFlight = (flightId) => __awaiter(void 0, void 0, void 0, function* () {

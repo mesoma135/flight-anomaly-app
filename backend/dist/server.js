@@ -13,12 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const db_1 = require("./config/db");
 const http_1 = __importDefault(require("http"));
-const redisClient_1 = require("./cache/redisClient");
-const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const db_1 = require("./config/db");
+const redisClient_1 = require("./cache/redisClient");
+const websocketService_1 = require("./services/websocketService");
+const express_1 = __importDefault(require("express"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5050;
 (() => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,6 +31,8 @@ const PORT = process.env.PORT || 5050;
         });
         console.log("Connecting to Redis");
         yield (0, redisClient_1.connectRedis)();
+        console.log("WebSocket Initializing...");
+        (0, websocketService_1.initWebSocket)(); //Initialize Websocket Server
     }
     catch (error) {
         console.error("Failed to start server: ", error);

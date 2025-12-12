@@ -1,10 +1,12 @@
 import dotenv from "dotenv";
-dotenv.config();
-import { connectDB } from "./config/db";
 import http from "http";
-import { connectRedis } from "./cache/redisClient";
-import express, { Application } from "express";
 import cors from "cors";
+import { connectDB } from "./config/db";
+import { connectRedis } from "./cache/redisClient";
+import { initWebSocket } from "./services/websocketService";
+import express, { Application } from "express";
+
+dotenv.config();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5050;
@@ -18,6 +20,10 @@ const PORT = process.env.PORT || 5050;
 });
 console.log("Connecting to Redis");
 await connectRedis();
+
+console.log("WebSocket Initializing...")
+initWebSocket(); //Initialize Websocket Server
+
 }
     catch(error){
         console.error("Failed to start server: ", error);
