@@ -9,6 +9,7 @@ export const fetchAllStates = async (req: Request, res: Response) =>{
             `${openSkyAPI}/states/all`, { timeout: 10000 }
         );
         res.json(response.data);
+        console.log("Flights recieved: ", response.data.states.length);
     }
     catch(error){
         res.status(500).json({ error: "Failed to fetch states" });

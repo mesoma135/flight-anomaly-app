@@ -19,6 +19,7 @@ const fetchAllStates = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const response = yield axios_1.default.get(`${openSkyAPI}/states/all`, { timeout: 10000 });
         res.json(response.data);
+        console.log("Flights recieved: ", response.data.states.length);
     }
     catch (error) {
         res.status(500).json({ error: "Failed to fetch states" });
