@@ -29,8 +29,6 @@ flightSnapshotSchema.index(
 );
 
 const FlightSnapshot: Model<FlightSnapshotDocument> =
-  mongoose.models.FlightSnapshot ||
-  mongoose.model<FlightSnapshotDocument>(
-    "FlightSnapshot", flightSnapshotSchema);
+  mongoose.models.FlightSnapshot || mongoose.model<FlightSnapshotDocument>("FlightSnapshot", flightSnapshotSchema);
 
 export default FlightSnapshot;
