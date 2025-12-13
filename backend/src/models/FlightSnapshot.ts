@@ -1,33 +1,36 @@
-import mongoose, {Document, Schema} from "mongoose";
-import Flight from "./Flight";
-import { timeStamp } from "console";
+import mongoose, { Document, Schema, Model } from "mongoose";
 
-export interface flightSnapshotDocument extends Document {
-    flight: mongoose.Types.ObjectId;
-    altitude: number;
-    speed: number;
-    heading: number;
-    verticalSpeed: number;
-    latitude: number;
-    longitude: number;
-    timestamp: Date;
+export interface FlightSnapshotDocument extends Document {
+  flightIcao24: string;
+  altitude: number | null;
+  speed: number | null;
+  heading: number | null;
+  verticalSpeed: number | null;
+  latitude: number | null;
+  longitude: number | null;
+  timestamp: Date;
 }
 
-const flightSnapshotSchema = new Schema<flightSnapshotDocument>({
-    flight: { type: Schema.Types.ObjectId, ref: Flight, required: true, index: true},
-    altitude: Number,
-    speed: Number,
-    heading: Number,
-    verticalSpeed: Number,
-    latitude: Number,
-    longitude: Number,
-    timestamp: { type: Date, default: Date.now, index:true },
+const flightSnapshotSchema = new Schema<FlightSnapshotDocument>({
+  flightIcao24: { type: String, required: true, index: true },
+  altitude: Number,
+  speed: Number,
+  heading: Number,
+  verticalSpeed: Number,
+  latitude: Number,
+  longitude: Number,
+  timestamp: { type: Date, default: Date.now, index: true },
 });
 
-//TTL to auto-delete snapshots after 5h
+// TTL index (auto-delete after 5h)
 flightSnapshotSchema.index(
-    { timeStamp: 1 },
-    { expireAfterSeconds: 60 * 60 * 5}
+  { timestamp: 1 },
+  { expireAfterSeconds: 60 * 60 * 5 }
 );
 
-export default mongoose.model<flightSnapshotDocument>("FlightSnapshot", flightSnapshotSchema);
+const FlightSnapshot: Model<FlightSnapshotDocument> =
+  mongoose.models.FlightSnapshot ||
+  mongoose.model<FlightSnapshotDocument>(
+    "FlightSnapshot", flightSnapshotSchema);
+
+export default FlightSnapshot;

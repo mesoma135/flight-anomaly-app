@@ -1,6 +1,9 @@
 import axios from "axios";
+import { timeStamp } from "console";
 import { saveLiveFlight, addActiveFlight } from "../cache/flightCache";
 import { triggerAnomalyCheck } from "./anomalyTrigger";
+import FlightSnapshot from "../models/FlightSnapshot";
+import Flight from "../models/Flight";
 
 const openSkyAPI = process.env.OPENSKY_URL || "";
 
@@ -18,7 +21,7 @@ export const fetchAndStoreFlights = async () => {
         const flight = states[i];
 
         const flightData = {
-            icao24: flight[0], //icao24 unique Id
+            flightIcao24: flight[0], //icao24 unique Id
             callsign: flight[1] ? flight[1].trim(): "",
             origin_country: flight[2] || "",
             longitude: flight[5] ?? null,
@@ -30,13 +33,15 @@ export const fetchAndStoreFlights = async () => {
             timestamp: Date.now()
         };
         
-        await saveLiveFlight(flightId, flightData);
-        await addActiveFlight(flightId);
+        await saveLiveFlight(flight[0], flightData);
+        await addActiveFlight(flight[0]);
 
         const snapshot = await FlightSnapshot.create({
-            flight: flightObjectId,
-            ...
-        })
+           ...flightData,
+           timestamp: new Date(flightData.timestamp),
+          });
+
+        triggerAnomalyCheck(snapshot);
        }
        console.log("Flight data loaded successfully!");
     }
