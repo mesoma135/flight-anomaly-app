@@ -1,18 +1,14 @@
-import mongoose, { Document } from "mongoose";
-export interface flightSnapshotDocument extends Document {
-    flight: mongoose.Types.ObjectId;
-    altitude: number;
-    speed: number;
-    heading: number;
-    verticalSpeed: number;
-    latitude: number;
-    longitude: number;
+import { Document, Model } from "mongoose";
+export interface FlightSnapshotDocument extends Document {
+    flightIcao24: string;
+    altitude: number | null;
+    speed: number | null;
+    heading: number | null;
+    verticalSpeed: number | null;
+    latitude: number | null;
+    longitude: number | null;
     timestamp: Date;
 }
-declare const _default: mongoose.Model<flightSnapshotDocument, {}, {}, {}, mongoose.Document<unknown, {}, flightSnapshotDocument, {}, mongoose.DefaultSchemaOptions> & flightSnapshotDocument & Required<{
-    _id: mongoose.Types.ObjectId;
-}> & {
-    __v: number;
-}, any, flightSnapshotDocument>;
-export default _default;
+declare const FlightSnapshot: Model<FlightSnapshotDocument>;
+export default FlightSnapshot;
 //# sourceMappingURL=FlightSnapshot.d.ts.map

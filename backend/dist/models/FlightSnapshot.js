@@ -32,21 +32,20 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const Flight_1 = __importDefault(require("./Flight"));
 const flightSnapshotSchema = new mongoose_1.Schema({
-    flight: { type: mongoose_1.Schema.Types.ObjectId, ref: Flight_1.default, required: true },
-    altitude: { type: Number },
-    speed: { type: Number },
-    heading: { type: Number },
-    verticalSpeed: { type: Number },
-    latitude: { Number },
-    longitude: { Number },
-    timestamp: { type: Date, default: Date.now },
-}, { timestamps: true });
-exports.default = mongoose_1.default.model("FlightSnapshot", flightSnapshotSchema);
+    flightIcao24: { type: String, required: true, index: true },
+    altitude: Number,
+    speed: Number,
+    heading: Number,
+    verticalSpeed: Number,
+    latitude: Number,
+    longitude: Number,
+    timestamp: { type: Date, default: Date.now, index: true },
+});
+// TTL index (auto-delete after 5h)
+flightSnapshotSchema.index({ timestamp: 1 }, { expireAfterSeconds: 60 * 60 * 5 });
+const FlightSnapshot = mongoose_1.default.models.FlightSnapshot || mongoose_1.default.model("FlightSnapshot", flightSnapshotSchema);
+exports.default = FlightSnapshot;
 //# sourceMappingURL=FlightSnapshot.js.map

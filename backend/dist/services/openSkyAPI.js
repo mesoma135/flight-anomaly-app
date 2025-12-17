@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchAndStoreFlights = void 0;
 const axios_1 = __importDefault(require("axios"));
 const flightCache_1 = require("../cache/flightCache");
+const anomalyTrigger_1 = require("./anomalyTrigger");
+const FlightSnapshot_1 = __importDefault(require("../models/FlightSnapshot"));
 const openSkyAPI = process.env.OPENSKY_URL || "";
 const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -27,11 +29,8 @@ const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* (
         }
         for (let i = 0; i < states.length; i++) {
             const flight = states[i];
-            const flightId = flight[0]; //icao24 unique Id
-            if (!flightId) {
-                continue;
-            }
             const flightData = {
+                flightIcao24: flight[0], //icao24 unique Id
                 callsign: flight[1] ? flight[1].trim() : "",
                 origin_country: flight[2] || "",
                 longitude: (_a = flight[5]) !== null && _a !== void 0 ? _a : null,
@@ -42,8 +41,10 @@ const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* (
                 altitude: flight[13] != null ? Math.floor(flight[13] * 3.28084) : null,
                 timestamp: Date.now()
             };
-            yield (0, flightCache_1.saveLiveFlight)(flightId, flightData);
-            yield (0, flightCache_1.addActiveFlight)(flightId);
+            yield (0, flightCache_1.saveLiveFlight)(flight[0], flightData);
+            yield (0, flightCache_1.addActiveFlight)(flight[0]);
+            const snapshot = yield FlightSnapshot_1.default.create(Object.assign(Object.assign({}, flightData), { timestamp: new Date(flightData.timestamp) }));
+            (0, anomalyTrigger_1.triggerAnomalyCheck)(snapshot);
         }
         console.log("Flight data loaded successfully!");
     }

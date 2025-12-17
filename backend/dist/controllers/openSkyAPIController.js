@@ -14,7 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchStateById = exports.fetchAllStates = void 0;
 const axios_1 = __importDefault(require("axios"));
+//TODO: Implement bbox feature later
 const openSkyAPI = process.env.OPENSKY_URL || "";
+//Global function for proper mapping by modules
 const mappedStates = (flight) => {
     var _a, _b;
     return ({
