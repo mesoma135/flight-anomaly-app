@@ -1,5 +1,6 @@
 import FlightSnapshot, { FlightSnapshotDocument } from "../models/FlightSnapshot";
 import Anomaly from "../models/Anomaly";
+import { broadcastAnomaly } from "./anomalyBroadcaster";
 import { ObjectId, Types } from "mongoose";
 
 const ANOMALY_COOLDOWN_MS = 2 * 60 * 1000;
@@ -49,15 +50,16 @@ export const triggerAnomalyCheck = async(snapshot: FlightSnapshotDocument) => {
             continue;
         }
 
-        const doc = new Anomaly({
+        await Anomaly.create({
             flight: snapshot._id,
             type: anomaly!.type,
             message: anomaly!.message
         });
-
-        await doc.save();
-
+        broadcastAnomaly({
+            flightIcao24: snapshot.flightIcao24,
+            type: anomaly!.type,
+            message: anomaly!.message,
+            timestamp: Date.now()
+        });
     }
-    
-   
 };
