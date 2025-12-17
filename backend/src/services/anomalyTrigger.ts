@@ -2,6 +2,8 @@ import FlightSnapshot, { FlightSnapshotDocument } from "../models/FlightSnapshot
 import Anomaly from "../models/Anomaly";
 import { ObjectId, Types } from "mongoose";
 
+const ANOMALY_COOLDOWN_MS = 2 * 60 * 1000;
+
 export const triggerAnomalyCheck = async(snapshot: FlightSnapshotDocument) => {
     const anomalies: {
         type: "LOW ALTITUDE" | "OVERSPEED" | "EXTREME VERTICAL SPEED";
@@ -35,14 +37,26 @@ export const triggerAnomalyCheck = async(snapshot: FlightSnapshotDocument) => {
         console.log("Anomaly Detected:", snapshot.flightIcao24, anomalies[i]);
         const anomaly = anomalies[i];
 
+        const recentAnomaly = await Anomaly.findOne({
+            flight: snapshot._id,
+            type: anomaly!.type,
+            createdAt: {
+                $gte: new Date(Date.now() - ANOMALY_COOLDOWN_MS)
+            }
+        });
+
+        if (recentAnomaly) {
+            continue;
+        }
+
         const doc = new Anomaly({
             flight: snapshot._id,
-            type: anomalies[i]?.type,
-            message: anomalies[i]?.message
+            type: anomaly!.type,
+            message: anomaly!.message
         });
 
         await doc.save();
-        
+
     }
     
    
