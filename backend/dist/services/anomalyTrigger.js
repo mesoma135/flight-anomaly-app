@@ -14,8 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.triggerAnomalyCheck = void 0;
 const Anomaly_1 = __importDefault(require("../models/Anomaly"));
+const anomalyBroadcaster_1 = require("./anomalyBroadcaster");
+const ANOMALY_COOLDOWN_MS = 2 * 60 * 1000;
 const triggerAnomalyCheck = (snapshot) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
     const anomalies = [];
     if (snapshot.altitude !== null && snapshot.altitude < 500 && snapshot.speed !== null && snapshot.speed == 200) {
         anomalies.push({
@@ -41,12 +42,27 @@ const triggerAnomalyCheck = (snapshot) => __awaiter(void 0, void 0, void 0, func
     for (let i = 0; i < anomalies.length; i++) {
         console.log("Anomaly Detected:", snapshot.flightIcao24, anomalies[i]);
         const anomaly = anomalies[i];
-        const doc = new Anomaly_1.default({
+        const recentAnomaly = yield Anomaly_1.default.findOne({
             flight: snapshot._id,
-            type: (_a = anomalies[i]) === null || _a === void 0 ? void 0 : _a.type,
-            message: (_b = anomalies[i]) === null || _b === void 0 ? void 0 : _b.message
+            type: anomaly.type,
+            createdAt: {
+                $gte: new Date(Date.now() - ANOMALY_COOLDOWN_MS)
+            }
         });
-        yield doc.save();
+        if (recentAnomaly) {
+            continue;
+        }
+        yield Anomaly_1.default.create({
+            flight: snapshot._id,
+            type: anomaly.type,
+            message: anomaly.message
+        });
+        (0, anomalyBroadcaster_1.broadcastAnomaly)({
+            flightIcao24: snapshot.flightIcao24,
+            type: anomaly.type,
+            message: anomaly.message,
+            timestamp: Date.now()
+        });
     }
 });
 exports.triggerAnomalyCheck = triggerAnomalyCheck;

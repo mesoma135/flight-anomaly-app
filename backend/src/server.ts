@@ -7,6 +7,7 @@ import { initWebSocket } from "./services/websocketService";
 import express, { Application } from "express";
 import flightRoutes from "./routes/flightRoutes";
 import openSkyAPIRoutes from "./routes/openSkyAPIRoutes";
+import anomalyRoutes from "./routes/anomalyRoutes";
 
 dotenv.config();
 
@@ -36,3 +37,4 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/flight", flightRoutes);
 app.use("/api/opensky", openSkyAPIRoutes);
+app.use("/api/anomalies", anomalyRoutes);

@@ -1,1 +1,1 @@
-{"version":3,"file":"anomalyRoutes.js","sourceRoot":"","sources":["../../src/routes/anomalyRoutes.ts"],"names":[],"mappings":""}
+{"version":3,"file":"anomalyRoutes.js","sourceRoot":"","sources":["../../src/routes/anomalyRoutes.ts"],"names":[],"mappings":";;AAAA,wEAAqE;AACrE,qCAAiC;AAEjC,MAAM,MAAM,GAAG,IAAA,gBAAM,GAAE,CAAC;AAExB,MAAM,CAAC,GAAG,CAAC,GAAG,EAAE,qCAAiB,CAAC,CAAC;AAEnC,kBAAe,MAAM,CAAC"}
