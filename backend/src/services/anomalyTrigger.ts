@@ -4,7 +4,7 @@ import { broadcastAnomaly } from "./anomalyBroadcaster";
 import { ObjectId, Types } from "mongoose";
 
 const ANOMALY_COOLDOWN_MS = 2 * 60 * 1000;
-
+//REMINDER: ADD SINGLE SNAPSHOT HANDLING SERVICE TO CENTRALIZE SIDE EFFECTS
 export const triggerAnomalyCheck = async(snapshot: FlightSnapshotDocument) => {
     const anomalies: {
         type: "LOW ALTITUDE" | "OVERSPEED" | "EXTREME VERTICAL SPEED";
