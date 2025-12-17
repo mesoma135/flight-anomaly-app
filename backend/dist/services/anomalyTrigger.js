@@ -8,21 +8,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.triggerAnomalyCheck = void 0;
+const Anomaly_1 = __importDefault(require("../models/Anomaly"));
 const triggerAnomalyCheck = (snapshot) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     const anomalies = [];
-    if (snapshot.altitude !== null && snapshot.altitude < 500) {
-        anomalies.push("LOW ALTITUDE");
+    if (snapshot.altitude !== null && snapshot.altitude < 500 && snapshot.speed !== null && snapshot.speed == 200) {
+        anomalies.push({
+            type: "LOW ALTITUDE",
+            message: `Aircraft below safe altitude: ${snapshot.altitude} ft`
+        });
     }
     if (snapshot.verticalSpeed !== null && snapshot.verticalSpeed > 4500 && snapshot.altitude !== null && snapshot.altitude < 2500) {
-        anomalies.push("EXTREME VERTICAL SPEED");
+        anomalies.push({
+            type: "EXTREME VERTICAL SPEED",
+            message: `Extreme Vertical Speed Detected: ${snapshot.verticalSpeed}`
+        });
     }
     if (snapshot.speed !== null && snapshot.speed > 650) {
-        anomalies.push("OVERSPEED");
+        anomalies.push({
+            type: "OVERSPEED",
+            message: `Overspeed Detected: ${snapshot.speed}`
+        });
     }
-    if (anomalies.length > 0) {
-        console.log("Anomaly Detected", snapshot.flightIcao24, anomalies);
+    if (anomalies.length === 0) {
+        return;
+    }
+    for (let i = 0; i < anomalies.length; i++) {
+        console.log("Anomaly Detected:", snapshot.flightIcao24, anomalies[i]);
+        const anomaly = anomalies[i];
+        const doc = new Anomaly_1.default({
+            flight: snapshot._id,
+            type: (_a = anomalies[i]) === null || _a === void 0 ? void 0 : _a.type,
+            message: (_b = anomalies[i]) === null || _b === void 0 ? void 0 : _b.message
+        });
+        yield doc.save();
     }
 });
 exports.triggerAnomalyCheck = triggerAnomalyCheck;

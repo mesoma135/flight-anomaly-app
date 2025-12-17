@@ -1,22 +1,19 @@
 import mongoose, { Document, Schema } from "mongoose";
 import FlightSnapshot from "./FlightSnapshot";
 
-export interface anomalyDocument extends Document{
+export interface AnomalyDocument extends Document{
 flight: mongoose.Types.ObjectId;
-type: string;
-severity: string;
+type: "LOW ALTITUDE" | "OVERSPEED" | "EXTREME VERTICAL SPEED";
 message: string;
-detectedAt: string;
 }
 
-const anomalySchema = new Schema<anomalyDocument>({
+const anomalySchema = new Schema<AnomalyDocument>({
     flight: { type: Schema.Types.ObjectId, ref: FlightSnapshot, required: true },
-    type: { type: String },
-    severity: { type: String },
+    type: { type: String, enum: ["LOW ALTITUDE", "OVERSPEED", "EXTREME VERTICAL SPEED"], required: true },
     message: { type: String },
-    detectedAt: { type: String }
 },
     { timestamps: true }
 );
 
-export default mongoose.model<anomalyDocument>("Anomalies", anomalySchema);
+const Anomaly = mongoose.model<AnomalyDocument>("Anomaly", anomalySchema);
+export default Anomaly;

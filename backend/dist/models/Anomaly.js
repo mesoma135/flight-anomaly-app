@@ -40,10 +40,9 @@ const mongoose_1 = __importStar(require("mongoose"));
 const FlightSnapshot_1 = __importDefault(require("./FlightSnapshot"));
 const anomalySchema = new mongoose_1.Schema({
     flight: { type: mongoose_1.Schema.Types.ObjectId, ref: FlightSnapshot_1.default, required: true },
-    type: { type: String },
-    severity: { type: String },
+    type: { type: String, enum: ["LOW ALTITUDE", "OVERSPEED", "EXTREME VERTICAL SPEED"], required: true },
     message: { type: String },
-    detectedAt: { type: String }
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("Anomalies", anomalySchema);
+const Anomaly = mongoose_1.default.model("Anomaly", anomalySchema);
+exports.default = Anomaly;
 //# sourceMappingURL=Anomaly.js.map

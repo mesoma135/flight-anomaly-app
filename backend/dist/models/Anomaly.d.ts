@@ -1,15 +1,13 @@
 import mongoose, { Document } from "mongoose";
-export interface anomalyDocument extends Document {
+export interface AnomalyDocument extends Document {
     flight: mongoose.Types.ObjectId;
-    type: string;
-    severity: string;
+    type: "LOW ALTITUDE" | "OVERSPEED" | "EXTREME VERTICAL SPEED";
     message: string;
-    detectedAt: string;
 }
-declare const _default: mongoose.Model<anomalyDocument, {}, {}, {}, mongoose.Document<unknown, {}, anomalyDocument, {}, mongoose.DefaultSchemaOptions> & anomalyDocument & Required<{
+declare const Anomaly: mongoose.Model<AnomalyDocument, {}, {}, {}, mongoose.Document<unknown, {}, AnomalyDocument, {}, mongoose.DefaultSchemaOptions> & AnomalyDocument & Required<{
     _id: mongoose.Types.ObjectId;
 }> & {
     __v: number;
-}, any, anomalyDocument>;
-export default _default;
+}, any, AnomalyDocument>;
+export default Anomaly;
 //# sourceMappingURL=Anomaly.d.ts.map

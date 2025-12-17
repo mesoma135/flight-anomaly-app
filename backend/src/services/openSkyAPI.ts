@@ -1,5 +1,4 @@
 import axios from "axios";
-import { timeStamp } from "console";
 import { saveLiveFlight, addActiveFlight } from "../cache/flightCache";
 import { triggerAnomalyCheck } from "./anomalyTrigger";
 import FlightSnapshot from "../models/FlightSnapshot";
