@@ -28,9 +28,10 @@ A real-time backend system for tracking flights and detecting abnormal behavior 
 - **Node.js / Express / TypeScript**
 - **MongoDB (Mongoose)**
 - **WebSockets**
-- External aviation data API
+- External aviation data API (OPENSKY API)
+- Redis Caching
 
-*(Planned: Python ML service, Redis caching, React map UI)*
+*(Planned: Python ML service, React map UI)*
 
 ---
 
