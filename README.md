@@ -1,4 +1,4 @@
-# ✈️ Flight Tracker & Anomaly Detection
+# Flight Tracker & Anomaly Detection App
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
