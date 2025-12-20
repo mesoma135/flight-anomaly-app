@@ -7,7 +7,7 @@
 ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-**Current Branch:** feature/machine-learning
+**Current working Branch:** feature/machine-learning
 
 **Status:** In progress — backend core is functional; ML and frontend layers are planned and still in development.
 
