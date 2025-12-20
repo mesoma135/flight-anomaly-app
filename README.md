@@ -8,7 +8,7 @@
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 A real-time backend system for tracking flights and detecting abnormal behavior using live aviation data, WebSockets, and time-series analysis. Built with scalability and machine learning integration in mind.
-
+**Current Branch:** feature/machine-learning
 **Status:** In progress — backend core is functional; ML and frontend layers are planned and still in development.
 
 ---
