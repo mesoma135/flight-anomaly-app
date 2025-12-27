@@ -8,6 +8,7 @@ import express, { Application } from "express";
 import flightRoutes from "./routes/flightRoutes";
 import openSkyAPIRoutes from "./routes/openSkyAPIRoutes";
 import anomalyRoutes from "./routes/anomalyRoutes";
+import { fetchAndStoreFlights } from "./services/openSkyAPI";
 
 dotenv.config();
 
@@ -27,6 +28,17 @@ await connectRedis();
 console.log("WebSocket Initializing...")
 initWebSocket(); //Initialize Websocket Server
 
+fetchAndStoreFlights();
+
+// Run every 60 seconds
+setInterval(async () => {
+    try {
+        await fetchAndStoreFlights();
+        console.log("Flight snapshots ingested");
+    } catch (err) {
+        console.error("Flight ingestion error:", err);
+    }
+}, 60000);
 }
     catch(error){
         console.error("Failed to start server: ", error);

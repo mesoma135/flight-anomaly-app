@@ -22,6 +22,7 @@ const express_1 = __importDefault(require("express"));
 const flightRoutes_1 = __importDefault(require("./routes/flightRoutes"));
 const openSkyAPIRoutes_1 = __importDefault(require("./routes/openSkyAPIRoutes"));
 const anomalyRoutes_1 = __importDefault(require("./routes/anomalyRoutes"));
+const openSkyAPI_1 = require("./services/openSkyAPI");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5050;
@@ -36,6 +37,17 @@ const PORT = process.env.PORT || 5050;
         yield (0, redisClient_1.connectRedis)();
         console.log("WebSocket Initializing...");
         (0, websocketService_1.initWebSocket)(); //Initialize Websocket Server
+        (0, openSkyAPI_1.fetchAndStoreFlights)();
+        // Run every 60 seconds
+        setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                yield (0, openSkyAPI_1.fetchAndStoreFlights)();
+                console.log("Flight snapshots ingested");
+            }
+            catch (err) {
+                console.error("Flight ingestion error:", err);
+            }
+        }), 60000);
     }
     catch (error) {
         console.error("Failed to start server: ", error);

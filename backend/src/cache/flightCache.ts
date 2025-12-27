@@ -1,21 +1,25 @@
 import { client } from "./redisClient";
 
-export const saveLiveFlight = async (flightId: string, data: any) =>{
-    await client.hSet(`flight: ${flightId}`, data);
+export const saveLiveFlight = async (flightIcao24: string, data: any) => {
+    await client.hSet(
+        `flight:${flightIcao24}`,
+        Object.entries(data).map(([k, v]) => [k, String(v ?? "")]).flat()
+        );
 };
 
-export const getLiveFlight = async(flightId: string) => {
-   return await client.hGetAll(`flight: ${flightId}`) || null;
+export const getLiveFlight = async (flightIcao24: string) => {
+  const data = await client.get(`flight:${flightIcao24}`);
+  return data ? JSON.parse(data) : null;
 };
 
-export const addActiveFlight = async(flightId: string) => {
-    await client.sAdd("activeFlights", flightId);
+export const addActiveFlight = async (flightIcao24: string) => {
+  await client.sAdd("activeFlights", flightIcao24);
 };
 
-export const getActiveFlights = async() => {
-    return await client.sMembers("activeFlights") || null;
+export const getActiveFlights = async () => {
+  return await client.sMembers("activeFlights");
 };
 
-export const removeActiveFlight = async (flightId: string) => {
-    await client.sRem("activeFlights", flightId);
+export const removeActiveFlight = async (flightIcao24: string) => {
+  await client.sRem("activeFlights", flightIcao24);
 };

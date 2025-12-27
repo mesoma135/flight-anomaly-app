@@ -4,11 +4,20 @@ import { triggerAnomalyCheck } from "./anomalyTrigger";
 import FlightSnapshot from "../models/FlightSnapshot";
 import Flight from "../models/Flight";
 
-const openSkyAPI = process.env.OPENSKY_URL || "";
+const openSkyAPI = process.env.OPENSKY_URL!;
+const username = process.env.OPENSKY_USERNAME!;
+const password = process.env.OPENSKY_PASSWORD!;
 
 export const fetchAndStoreFlights = async () => {
     try{
-       const response = await axios.get(openSkyAPI);
+       const response = await axios.get(openSkyAPI, {
+        auth: {
+            username,
+            password,
+        },
+        timeout: 15000
+       });
+
        const states = response.data.states;
 
        if(!states || !Array.isArray(states)) {
@@ -22,7 +31,6 @@ export const fetchAndStoreFlights = async () => {
         const flightData = {
             flightIcao24: flight[0], //icao24 unique Id
             callsign: flight[1] ? flight[1].trim(): "",
-            origin_country: flight[2] || "",
             longitude: flight[5] ?? null,
             latitude: flight[6] ?? null,
             speed: flight[9] != null ? Math.floor(flight[9]*1.94384): null, //converting from m/s to kts
@@ -36,7 +44,7 @@ export const fetchAndStoreFlights = async () => {
         await addActiveFlight(flight[0]);
 
         const snapshot = await FlightSnapshot.create({
-           ...flightData,
+            ...flightData,
            timestamp: new Date(flightData.timestamp),
           });
 

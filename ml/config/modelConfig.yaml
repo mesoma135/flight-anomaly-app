@@ -1,0 +1,10 @@
+model:
+data:
+  source: mongo
+type: isolation_forest
+n_estimators: 100
+contamination: 0.02
+random_state: 42
+
+features: 
+  window_size: 5

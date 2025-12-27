@@ -16,6 +16,7 @@ exports.triggerAnomalyCheck = void 0;
 const Anomaly_1 = __importDefault(require("../models/Anomaly"));
 const anomalyBroadcaster_1 = require("./anomalyBroadcaster");
 const ANOMALY_COOLDOWN_MS = 2 * 60 * 1000;
+//REMINDER: ADD SINGLE SNAPSHOT HANDLING SERVICE TO CENTRALIZE SIDE EFFECTS
 const triggerAnomalyCheck = (snapshot) => __awaiter(void 0, void 0, void 0, function* () {
     const anomalies = [];
     if (snapshot.altitude !== null && snapshot.altitude < 500 && snapshot.speed !== null && snapshot.speed == 200) {

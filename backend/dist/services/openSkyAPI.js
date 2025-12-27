@@ -17,11 +17,19 @@ const axios_1 = __importDefault(require("axios"));
 const flightCache_1 = require("../cache/flightCache");
 const anomalyTrigger_1 = require("./anomalyTrigger");
 const FlightSnapshot_1 = __importDefault(require("../models/FlightSnapshot"));
-const openSkyAPI = process.env.OPENSKY_URL || "";
+const openSkyAPI = process.env.OPENSKY_URL;
+const username = process.env.OPENSKY_USERNAME;
+const password = process.env.OPENSKY_PASSWORD;
 const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
-        const response = yield axios_1.default.get(openSkyAPI);
+        const response = yield axios_1.default.get(openSkyAPI, {
+            auth: {
+                username,
+                password,
+            },
+            timeout: 15000
+        });
         const states = response.data.states;
         if (!states || !Array.isArray(states)) {
             console.log("No flight data recieved from OpenSky");
@@ -32,7 +40,6 @@ const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* (
             const flightData = {
                 flightIcao24: flight[0], //icao24 unique Id
                 callsign: flight[1] ? flight[1].trim() : "",
-                origin_country: flight[2] || "",
                 longitude: (_a = flight[5]) !== null && _a !== void 0 ? _a : null,
                 latitude: (_b = flight[6]) !== null && _b !== void 0 ? _b : null,
                 speed: flight[9] != null ? Math.floor(flight[9] * 1.94384) : null, //converting from m/s to kts
