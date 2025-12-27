@@ -18,15 +18,28 @@ const flightCache_1 = require("../cache/flightCache");
 const anomalyTrigger_1 = require("./anomalyTrigger");
 const FlightSnapshot_1 = __importDefault(require("../models/FlightSnapshot"));
 const openSkyAPI = process.env.OPENSKY_URL;
-const username = process.env.OPENSKY_USERNAME;
-const password = process.env.OPENSKY_PASSWORD;
+const OPENSKY_TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
+function getOpenSkyToken() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const params = new URLSearchParams();
+        params.append("grant_type", "client_credentials");
+        params.append("client_id", process.env.OPENSKY_CLIENT_ID);
+        params.append("client_secret", process.env.OPENSKY_CLIENT_SECRET);
+        const res = yield axios_1.default.post(OPENSKY_TOKEN_URL, params, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+        return res.data.access_token;
+    });
+}
 const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
+        const token = yield getOpenSkyToken();
         const response = yield axios_1.default.get(openSkyAPI, {
-            auth: {
-                username,
-                password,
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
             timeout: 15000
         });

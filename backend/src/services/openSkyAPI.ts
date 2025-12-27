@@ -5,15 +5,31 @@ import FlightSnapshot from "../models/FlightSnapshot";
 import Flight from "../models/Flight";
 
 const openSkyAPI = process.env.OPENSKY_URL!;
-const username = process.env.OPENSKY_USERNAME!;
-const password = process.env.OPENSKY_PASSWORD!;
+const OPENSKY_TOKEN_URL =
+  "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
+
+async function getOpenSkyToken(): Promise<string> {
+  const params = new URLSearchParams();
+  params.append("grant_type", "client_credentials");
+  params.append("client_id", process.env.OPENSKY_CLIENT_ID!);
+  params.append("client_secret", process.env.OPENSKY_CLIENT_SECRET!);
+
+  const res = await axios.post(OPENSKY_TOKEN_URL, params, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  });
+
+  return res.data.access_token;
+}
 
 export const fetchAndStoreFlights = async () => {
     try{
-       const response = await axios.get(openSkyAPI, {
-        auth: {
-            username,
-            password,
+        const token = await getOpenSkyToken();
+
+        const response = await axios.get(openSkyAPI, {
+        headers: {
+            Authorization: `Bearer ${token}`, 
         },
         timeout: 15000
        });
@@ -25,7 +41,7 @@ export const fetchAndStoreFlights = async () => {
         return;
        }
 
-       for(let i=0; i < states.length; i++){
+       for(let i = 0; i < states.length; i++){
         const flight = states[i];
 
         const flightData = {

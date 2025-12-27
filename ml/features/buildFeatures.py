@@ -31,7 +31,7 @@ def load_live_data():
     client = MongoClient(mongo_uri)
 
     db = client["flight_anomaly"]     
-    collection = db["FlightSnapshot"]  
+    collection = db["flightsnapshots"]  
 
     docs = list(collection.find({}, {"_id": 0}))
     
@@ -43,13 +43,13 @@ def load_live_data():
 
 def buildFeatures(df: pd.DataFrame, window_size: int):
     feature_rows = []
-    for flight_id, group in df.groupby("flight_id"):
+    for flightIcao24, group in df.groupby("flightIcao24"):
         group = group.sort_values("timestamp")
         recent = group.tail(window_size)
         if len(recent) < window_size:
             continue
     
-    features = {"flight_id": flight_id, 
+    features = {"flightIcao24": flightIcao24, 
                 "mean_altitude": recent["altitude"].mean(), 
                 "std_velocity":recent["speed"].std(), 
                 "max_vertical_speed": recent["verticalSpeed"].abs().max(),
