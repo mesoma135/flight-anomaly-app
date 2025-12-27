@@ -1,10 +1,9 @@
 model:
+  type: isolation_forest
+  n_estimators: 200
+  contamination: 0.02
+  random_state: 42
 data:
   source: mongo
-type: isolation_forest
-n_estimators: 100
-contamination: 0.02
-random_state: 42
-
 features: 
   window_size: 10
