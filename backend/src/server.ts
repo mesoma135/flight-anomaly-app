@@ -28,27 +28,26 @@ await connectRedis();
 console.log("WebSocket Initializing...")
 initWebSocket(); //Initialize Websocket Server
 
-fetchAndStoreFlights();
-
 const INGEST_INTERVAL_MS = 60_000; // 1 minute
 
 async function runIngestionCycle() {
-    const runId = Date.now();
-  
-    console.log(`Ingestion cycle started [${runId}]`);
-  
-    try {
-      const count = await fetchAndStoreFlights();
-      console.log(`Cycle ${runId}: ${count} flights ingested`);
-    } catch (error) {
-      console.error(`Cycle ${runId} failed`, error);
-    }
+  const now = new Date().toISOString();
+  console.log(`[${now}] Ingestion cycle started`);
+
+  try {
+    const count = await fetchAndStoreFlights();
+    console.log(`[${now}] ${count} flights ingested`);
+  } catch (error) {
+    console.error(`[${now}] Cycle failed`, error);
   }
-
-runIngestionCycle(); // run immediately on startup
-
-setInterval(runIngestionCycle, INGEST_INTERVAL_MS);
 }
+
+// run immediately
+runIngestionCycle();
+
+// run repeatedly
+setInterval(runIngestionCycle, INGEST_INTERVAL_MS);
+    }
     catch(error){
         console.error("Failed to start server: ", error);
     }

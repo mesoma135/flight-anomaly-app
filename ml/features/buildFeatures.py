@@ -5,8 +5,6 @@ import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
-
- 
 base_dir = Path(__file__).resolve().parents[1]
 
 load_dotenv(dotenv_path=base_dir.parent / "backend" / ".env")
@@ -45,19 +43,20 @@ def load_live_data():
 
 def buildFeatures(df: pd.DataFrame, window_size: int):
     feature_rows = []
+    
     for flightIcao24, group in df.groupby("flightIcao24"):
         group = group.sort_values("timestamp")
-        recent = group.tail(window_size)
-        if len(recent) < window_size:
-            continue
-    
-    features = {"flightIcao24": flightIcao24, 
-                "mean_altitude": recent["altitude"].mean(), 
-                "std_velocity":recent["speed"].std(), 
-                "max_vertical_speed": recent["verticalSpeed"].abs().max(),
-                "heading_variance": recent["heading"].var()
+        for i in range(window_size, len(group) + 1):
+            window = group.iloc[i - window_size:i]
+            features = {
+                "flightIcao24": flightIcao24,
+                "window_end_time": window["timestamp"].iloc[-1],
+                "mean_altitude": window["altitude"].mean(),
+                "std_velocity": window["speed"].std(),
+                "max_vertical_speed": window["verticalSpeed"].abs().max(),
+                "heading_variance": window["heading"].var()
                 }
-    feature_rows.append(features)
+            feature_rows.append(features)
     return pd.DataFrame(feature_rows)
 
 def main():
@@ -70,8 +69,8 @@ def main():
     else:
         df = loadData()
         
-    TARGET_FLIGHT_ID = "4b1817"
-    df = df[df["flightIcao24"] == TARGET_FLIGHT_ID]
+    # TARGET_FLIGHT_ID = "4b1817"
+    # df = df[df["flightIcao24"] == TARGET_FLIGHT_ID]
     
     if df.empty:
         print("No data available. Skipping feature generation.")

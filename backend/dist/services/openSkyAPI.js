@@ -30,6 +30,12 @@ function getOpenSkyToken() {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
+            params: {
+                lamin: 40.0, // south latitude
+                lamax: 45.0, // north latitude
+                lomin: -80.0, // west longitude
+                lomax: -70.0,
+            },
         });
         return res.data.access_token;
     });

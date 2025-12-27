@@ -37,22 +37,23 @@ const PORT = process.env.PORT || 5050;
         yield (0, redisClient_1.connectRedis)();
         console.log("WebSocket Initializing...");
         (0, websocketService_1.initWebSocket)(); //Initialize Websocket Server
-        (0, openSkyAPI_1.fetchAndStoreFlights)();
         const INGEST_INTERVAL_MS = 60000; // 1 minute
         function runIngestionCycle() {
             return __awaiter(this, void 0, void 0, function* () {
-                const runId = Date.now();
-                console.log(`Ingestion cycle started [${runId}]`);
+                const now = new Date().toISOString();
+                console.log(`[${now}] Ingestion cycle started`);
                 try {
                     const count = yield (0, openSkyAPI_1.fetchAndStoreFlights)();
-                    console.log(`Cycle ${runId}: ${count} flights ingested`);
+                    console.log(`[${now}] ${count} flights ingested`);
                 }
                 catch (error) {
-                    console.error(`Cycle ${runId} failed`, error);
+                    console.error(`[${now}] Cycle failed`, error);
                 }
             });
         }
-        runIngestionCycle(); // run immediately on startup
+        // run immediately
+        runIngestionCycle();
+        // run repeatedly
         setInterval(runIngestionCycle, INGEST_INTERVAL_MS);
     }
     catch (error) {

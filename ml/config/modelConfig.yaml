@@ -7,4 +7,4 @@ contamination: 0.02
 random_state: 42
 
 features: 
-  window_size: 5
+  window_size: 10
