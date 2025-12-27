@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 
 
-
+ 
 base_dir = Path(__file__).resolve().parents[1]
 
 load_dotenv(dotenv_path=base_dir.parent / "backend" / ".env")
@@ -21,6 +21,8 @@ def loadConfig():
 
 def loadData():
     return pd.read_csv(input_path)
+
+
 
 def load_live_data():
     mongo_uri = os.getenv("ML_MONGO_URI")
@@ -67,7 +69,10 @@ def main():
         df = load_live_data()
     else:
         df = loadData()
-
+        
+    TARGET_FLIGHT_ID = "4b1817"
+    df = df[df["flightIcao24"] == TARGET_FLIGHT_ID]
+    
     if df.empty:
         print("No data available. Skipping feature generation.")
         return

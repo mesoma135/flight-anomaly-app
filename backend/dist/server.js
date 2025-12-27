@@ -38,16 +38,22 @@ const PORT = process.env.PORT || 5050;
         console.log("WebSocket Initializing...");
         (0, websocketService_1.initWebSocket)(); //Initialize Websocket Server
         (0, openSkyAPI_1.fetchAndStoreFlights)();
-        // Run every 60 seconds
-        setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
-            try {
-                yield (0, openSkyAPI_1.fetchAndStoreFlights)();
-                console.log("Flight snapshots ingested");
-            }
-            catch (err) {
-                console.error("Flight ingestion error:", err);
-            }
-        }), 60000);
+        const INGEST_INTERVAL_MS = 60000; // 1 minute
+        function runIngestionCycle() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const runId = Date.now();
+                console.log(`Ingestion cycle started [${runId}]`);
+                try {
+                    const count = yield (0, openSkyAPI_1.fetchAndStoreFlights)();
+                    console.log(`Cycle ${runId}: ${count} flights ingested`);
+                }
+                catch (error) {
+                    console.error(`Cycle ${runId} failed`, error);
+                }
+            });
+        }
+        runIngestionCycle(); // run immediately on startup
+        setInterval(runIngestionCycle, INGEST_INTERVAL_MS);
     }
     catch (error) {
         console.error("Failed to start server: ", error);

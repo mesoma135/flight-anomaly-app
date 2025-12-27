@@ -30,15 +30,24 @@ initWebSocket(); //Initialize Websocket Server
 
 fetchAndStoreFlights();
 
-// Run every 60 seconds
-setInterval(async () => {
+const INGEST_INTERVAL_MS = 60_000; // 1 minute
+
+async function runIngestionCycle() {
+    const runId = Date.now();
+  
+    console.log(`Ingestion cycle started [${runId}]`);
+  
     try {
-        await fetchAndStoreFlights();
-        console.log("Flight snapshots ingested");
-    } catch (err) {
-        console.error("Flight ingestion error:", err);
+      const count = await fetchAndStoreFlights();
+      console.log(`Cycle ${runId}: ${count} flights ingested`);
+    } catch (error) {
+      console.error(`Cycle ${runId} failed`, error);
     }
-}, 60000);
+  }
+
+runIngestionCycle(); // run immediately on startup
+
+setInterval(runIngestionCycle, INGEST_INTERVAL_MS);
 }
     catch(error){
         console.error("Failed to start server: ", error);

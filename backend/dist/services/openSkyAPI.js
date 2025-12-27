@@ -17,6 +17,7 @@ const axios_1 = __importDefault(require("axios"));
 const flightCache_1 = require("../cache/flightCache");
 const anomalyTrigger_1 = require("./anomalyTrigger");
 const FlightSnapshot_1 = __importDefault(require("../models/FlightSnapshot"));
+let ingestedCount = 0;
 const openSkyAPI = process.env.OPENSKY_URL;
 const OPENSKY_TOKEN_URL = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
 function getOpenSkyToken() {
@@ -44,9 +45,9 @@ const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* (
             timeout: 15000
         });
         const states = response.data.states;
-        if (!states || !Array.isArray(states)) {
-            console.log("No flight data recieved from OpenSky");
-            return;
+        if (!Array.isArray(states) || states.length === 0) {
+            console.log("OpenSky returned 0 flights");
+            return 0;
         }
         for (let i = 0; i < states.length; i++) {
             const flight = states[i];
@@ -64,8 +65,11 @@ const fetchAndStoreFlights = () => __awaiter(void 0, void 0, void 0, function* (
             yield (0, flightCache_1.saveLiveFlight)(flight[0], flightData);
             yield (0, flightCache_1.addActiveFlight)(flight[0]);
             const snapshot = yield FlightSnapshot_1.default.create(Object.assign(Object.assign({}, flightData), { timestamp: new Date(flightData.timestamp) }));
+            /*console.log("Snapshot saved:", snapshot.flightIcao24, snapshot.timestamp); */
             (0, anomalyTrigger_1.triggerAnomalyCheck)(snapshot);
+            ingestedCount++;
         }
+        return ingestedCount;
         console.log("Flight data loaded successfully!");
     }
     catch (error) {

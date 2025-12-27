@@ -4,6 +4,8 @@ import { triggerAnomalyCheck } from "./anomalyTrigger";
 import FlightSnapshot from "../models/FlightSnapshot";
 import Flight from "../models/Flight";
 
+let ingestedCount = 0;
+
 const openSkyAPI = process.env.OPENSKY_URL!;
 const OPENSKY_TOKEN_URL =
   "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token";
@@ -36,10 +38,10 @@ export const fetchAndStoreFlights = async () => {
 
        const states = response.data.states;
 
-       if(!states || !Array.isArray(states)) {
-        console.log("No flight data recieved from OpenSky");
-        return;
-       }
+       if (!Array.isArray(states) || states.length === 0) {
+        console.log("OpenSky returned 0 flights");
+        return 0;
+      }
 
        for(let i = 0; i < states.length; i++){
         const flight = states[i];
@@ -63,9 +65,12 @@ export const fetchAndStoreFlights = async () => {
             ...flightData,
            timestamp: new Date(flightData.timestamp),
           });
-
-        triggerAnomalyCheck(snapshot);
+          /*console.log("Snapshot saved:", snapshot.flightIcao24, snapshot.timestamp); */
+          triggerAnomalyCheck(snapshot);
+          ingestedCount++;
        }
+       
+       return ingestedCount;
        console.log("Flight data loaded successfully!");
     }
     catch(error){
