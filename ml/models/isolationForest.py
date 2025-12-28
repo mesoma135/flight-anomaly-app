@@ -33,4 +33,6 @@ df["has_anomaly"] = model.predict(x_scaled)  # -1 = anomaly, 1 = normal
 (df.sort_values("anomaly_score").head(10))
 df.to_csv(output_path, index=False)
 
+joblib.dump(model, "ml/models/isolation_forest.joblib")
+
 print("Model trained and anomalies scored")
