@@ -8,26 +8,19 @@ from pymongo import MongoClient
 base_dir = Path(__file__).resolve().parents[1]
 
 load_dotenv(dotenv_path=base_dir.parent / "backend" / ".env")
-
 config_path = base_dir /"config"/"modelConfig.yaml"
-input_path = base_dir /"data"/"sampleData"/"flightSnapshots.csv"
 output_path = base_dir/"data"/"processedData"/"features.csv"
 
 def loadConfig():
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
 
-def loadData():
-    return pd.read_csv(input_path)
-
-
-
 def load_live_data():
     mongo_uri = os.getenv("ML_MONGO_URI")
 
     if not mongo_uri:
         raise RuntimeError("ML_MONGO_URI not found")
-
+    
     client = MongoClient(mongo_uri)
 
     db = client["flight_anomaly"]     
@@ -63,17 +56,14 @@ def main():
     config = loadConfig()
     window_size = config["features"]["window_size"]
 
-    # choose data source
     if config.get("data", {}).get("source") == "mongo":
         df = load_live_data()
-    else:
-        df = loadData()
         
     # TARGET_FLIGHT_ID = "4b1817"
     # df = df[df["flightIcao24"] == TARGET_FLIGHT_ID]
     
     if df.empty:
-        print("No data available. Skipping feature generation.")
+        print("No data available")
         return
 
     features_df = buildFeatures(df, window_size)

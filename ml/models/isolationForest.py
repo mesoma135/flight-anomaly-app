@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from pathlib import Path
 from pymongo import MongoClient
 from pymongo import UpdateOne
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 from dotenv import load_dotenv
 
@@ -57,29 +57,23 @@ anomalies = df[df["has_anomaly"] == -1]
     
 docs = []
 
+for _, row in anomalies.iterrows():
+    docs.append({
+        "flightIcao24": row["flightIcao24"],
+        "window_end_time": row["window_end_time"],
+        "anomaly_score": float(row["anomaly_score"]),
+        "model": "isolation_forest_v1",
+        "features": {
+            "mean_altitude": float(row["mean_altitude"]),
+            "std_velocity": float(row["std_velocity"]),
+            "max_vertical_speed": float(row["max_vertical_speed"]),
+            "heading_variance": float(row["heading_variance"]),
+        },
+        "created_at": datetime.now(timezone.utc)
+    })
+
 if docs:
-    operations = []
-
-    for doc in docs:
-        operations.append(
-            UpdateOne(
-                {
-                    "flightIcao24": doc["flightIcao24"],
-                    "window_end_time": doc["window_end_time"]
-                },
-                {
-                    "$set": {
-                        "anomaly_score": doc["anomaly_score"],
-                        "model": doc["model"],
-                        "features": doc["features"],
-                        "created_at": doc["created_at"]
-                    }
-                },
-                upsert=True
-            )
-        )
-
-    result = collection.bulk_write(operations)
-    print(f"Inserted and updated {result.upserted_count} anomalies")
+    collection.insert_many(docs)
+    print(f"Inserted {len(docs)} anomaly events")
 else:
-    print("No anomalies to insert or update")
+    print("No anomalies to insert")
