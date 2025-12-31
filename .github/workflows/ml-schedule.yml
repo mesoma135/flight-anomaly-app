@@ -1,0 +1,20 @@
+name: ML Pipeline Schedule
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  run-ml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build ML Docker image
+        run: docker build -t ml-pipeline ./ml
+
+      - name: Run ML pipeline
+        run: docker run --rm ml-pipeline
