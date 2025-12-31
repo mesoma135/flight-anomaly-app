@@ -2,16 +2,14 @@
 
 A **real-time, event-driven system** for tracking live flight data and detecting anomalous flight behavior using **time-series analysis, machine learning, and containerized microservices**.
 
-This project is designed to mirror **production-grade backend and ML workflows**, including Docker orchestration and scheduled ML pipelines.
 ---
 
 ## Problem Statement
 
 With thousands of aircraft airborne at any given moment, identifying anomalous flight behavior becomes increasingly difficult to do manually or on a flight-by-flight basis. While many deviations are benign, subtle or evolving, anomalies can easily be overlooked when attention is spread across large volumes of real-time flight data.
 
-This project aims to make it easier to surface **unusual flight patterns at scale** by programmatically analyzing historical and live flight telemetry. Rather than inspecting individual flights, the system focuses on modeling *normal behavior over time* and flagging deviations automatically, allowing attention to be directed where it matters most.
+This project aims to make it easier to surface **unusual flight patterns at scale** by programmatically analyzing historical and live flight telemetry, and make it easier . Rather than inspecting individual flights, the system focuses on modeling *normal behavior over time* and flagging deviations automatically, allowing attention to be directed where it matters most.
 
-The goal here is not to replicate existing flight tracking tools, but to explore how backend systems and machine learning can be used to **augment aviation data with automated insight**, particularly when operating at a scale where manual analysis is niether practical nor effient.
 ---
 
 ## Inspiration
@@ -19,6 +17,7 @@ The goal here is not to replicate existing flight tracking tools, but to explore
 This project was inspired by tools like **Flightradar24**, which sparked my interest in large-scale flight tracking and real-time aviation data. While platforms like these excel at visualization and situational awareness, I was curious about what could be built on top of similar data to **analyze behavior**, not just display it.
 
 There is a need for a **scalable and automated system** that can continuously ingest live flight data, model normal behavior over time, and flag anomalous patterns in a reproducible and production-ready manner.
+
 ---
 
 ## What This Project Addresses
@@ -31,12 +30,14 @@ This project addresses that gap by building a **real-time, ML-enabled backend pl
 - Applies machine learning techniques to detect anomalies
 - Separates data ingestion, processing, and ML concerns into independent services
 - Runs reliably using containerized, reproducible infrastructure
+  
 ---
 
 By working with live flight data, this project allowed me to:
 - explore real-world, noisy data streams and extract, load and transoform the data
 - think critically about system design under continuous data flow
 - apply ML concepts in a way that reflects how they are actually used in practice
+  
 ---
 
 ## Project Status
@@ -51,6 +52,7 @@ What I've done so far:
 
 What I'm yet to work on/complete:
 -  Frontend
+  
 ---
 
 ## What This System Does
@@ -62,14 +64,16 @@ What I'm yet to work on/complete:
 - Runs a **scheduled ML pipeline** for anomaly detection  
 - Exposes clean APIs for querying flights and anomalies  
 - Designed for extensibility to advanced models (Isolation Forest, LSTM)
+
 ---
 
 ## Architecture Overview
 
-### Services (Containerized)
+### Technologies
 
 - **Backend API** — Node.js / Express / TypeScript 
 - **ML Pipeline Service** — Python  
 - **MongoDB** — Persistent time-series storage  
-- **Redis** — Caching and fast access  
+- **Redis** — Caching and fast access
+
 ---
