@@ -3,7 +3,9 @@ model:
   n_estimators: 200
   contamination: 0.02
   random_state: 42
+
 data:
   source: mongo
+  
 features: 
   window_size: 10

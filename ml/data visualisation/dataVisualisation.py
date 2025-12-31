@@ -52,10 +52,7 @@ plt.savefig(output_dir / "velocity_vs_anomaly.png")
 plt.close()
 
 # Per-flight anomaly timeline
-flight = (
-    df.sort_values("anomaly_score")
-      .iloc[0]["flightIcao24"]
-)
+flight = (df.sort_values("anomaly_score").iloc[0]["flightIcao24"])
 
 flight_df = df[df["flightIcao24"] == flight]
 

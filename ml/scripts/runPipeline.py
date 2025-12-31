@@ -19,14 +19,8 @@ def run_step(name, command):
         print(f"{name} completed")
 
 if __name__ == "__main__":
-    run_step(
-        "Feature Builder",
-        ["python", features_path]
-    )
+    run_step("Feature Builder", ["python", features_path])
 
-    run_step(
-        "Isolation Forest Scoring",
-        ["python", isolation_forest_path]
-    )
+    run_step("Isolation Forest Scoring",["python", isolation_forest_path])
 
     print(f"\n[{datetime.now(timezone.utc)}] Pipeline run finished successfully\n")

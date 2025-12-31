@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["bash", "-c", "while true; do python runPipeline.py --config modelConfig.yaml; sleep 300; done"]
+CMD ["bash", "-c", "while true; do python3 scripts/runPipeline.py --config config/modelConfig.yaml; sleep 300; done"]
