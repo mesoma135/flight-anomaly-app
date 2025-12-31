@@ -4,7 +4,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env
+      - .backend/.env
     depends_on:
       - mongo
       - redis
@@ -12,6 +12,8 @@ services:
 
   ml:
     build: ./ml
+    container_name: ml-pipeline
+    restart: always
 
   mongo:
     image: mongo:7
